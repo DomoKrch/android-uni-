@@ -5,63 +5,32 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.foodapp.databinding.PopularItemsBinding
+import com.example.foodapp.pojo.CategoryMeals
 import com.example.foodapp.pojo.Meal
 
-class MostPopularRecyclerAdapter : RecyclerView.Adapter<MostPopularRecyclerAdapter.MostPopularMealViewHolder>(){
-    private var mealsList: List<Meal> = ArrayList()
-    private lateinit var onItemClick: OnItemClick
-    private lateinit var onLongItemClick:OnLongItemClick
-    fun setMealList(mealsList: List<Meal>) {
+class MostPopularAdapter : RecyclerView.Adapter<MostPopularAdapter.PopularMealViewHolder>(){
+    private var mealsList = ArrayList<CategoryMeals>()
+
+    fun setMeals(mealsList:ArrayList<CategoryMeals>){
         this.mealsList = mealsList
         notifyDataSetChanged()
     }
 
-    fun setOnClickListener(onItemClick: OnItemClick){
-        this.onItemClick = onItemClick
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMealViewHolder {
+        return PopularMealViewHolder(PopularItemsBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
-    fun setOnLongCLickListener(onLongItemClick:OnLongItemClick){
-        this.onLongItemClick = onLongItemClick
-    }
-
-    class MostPopularMealViewHolder(val binding: MostPopularCardBinding) :
-        RecyclerView.ViewHolder(binding.root)
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MostPopularMealViewHolder {
-        return MostPopularMealViewHolder(MostPopularCardBinding.inflate(LayoutInflater.from(parent.context)))
-    }
-
-    override fun onBindViewHolder(holder: MostPopularMealViewHolder, position: Int) {
-        val i = position
-        holder.binding.apply {
-            Glide.with(holder.itemView)
-                .load(mealsList[position].strMealThumb)
-                .into(imgPopularMeal)
-
-        }
-
-        holder.itemView.setOnClickListener {
-            onItemClick.onItemClick(mealsList[position])
-        }
-
-        holder.itemView.setOnLongClickListener(object : View.OnLongClickListener{
-            override fun onLongClick(p0: View?): Boolean {
-                onLongItemClick.onItemLongClick(mealsList[i])
-                return true
-            }
-
-        })
+    override fun onBindViewHolder(holder: PopularMealViewHolder, position: Int) {
+        Glide.with(holder.itemView)
+            .load(mealsList[position].strMealThumb)
+            .into(holder.binding.imgPopularMealItem)
     }
 
     override fun getItemCount(): Int {
         return mealsList.size
     }
+
+    class PopularMealViewHolder(val binding: PopularItemsBinding): RecyclerView.ViewHolder(binding.root)
 }
 
-interface OnItemClick{
-    fun onItemClick(meal:Meal)
-}
-
-interface OnLongItemClick{
-    fun onItemLongClick(meal: Meal)
-}
