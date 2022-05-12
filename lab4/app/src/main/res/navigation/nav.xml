@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav"
+    app:startDestination="@id/homeFrag">
+
+    <fragment
+        android:id="@+id/homeFrag"
+        android:name="UI.HomeFrag"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/actionAddToDo"
+            app:destination="@id/addTodoFrag" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTodoFrag"
+        android:name="UI.AddTodoFrag"
+        android:label="fragment_add_todo"
+        tools:layout="@layout/fragment_add_todo" >
+        <action
+            android:id="@+id/actionSave"
+            app:destination="@id/homeFrag" />
+        <argument
+            app:argType="database.ToDo"
+            android:name="ToDo"
+            app:nullable="true"
+            android:defaultValue="@null" />
+    </fragment>
+</navigation>
