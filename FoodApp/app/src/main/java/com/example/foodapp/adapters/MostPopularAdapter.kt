@@ -11,6 +11,7 @@ import com.example.foodapp.pojo.Meal
 
 class MostPopularAdapter : RecyclerView.Adapter<MostPopularAdapter.PopularMealViewHolder>(){
     private var mealsList = ArrayList<CategoryMeals>()
+    lateinit var onItemClick:((CategoryMeals) -> Unit)
 
     fun setMeals(mealsList:ArrayList<CategoryMeals>){
         this.mealsList = mealsList
@@ -25,6 +26,10 @@ class MostPopularAdapter : RecyclerView.Adapter<MostPopularAdapter.PopularMealVi
         Glide.with(holder.itemView)
             .load(mealsList[position].strMealThumb)
             .into(holder.binding.imgPopularMealItem)
+
+        holder.itemView.setOnClickListener {
+            onItemClick.invoke(mealsList[position])
+        }
     }
 
     override fun getItemCount(): Int {
